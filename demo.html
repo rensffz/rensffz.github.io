@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="demo.css">
+  <title>Демоверсии</title>
+</head>
+<body>
+
+  <header>
+    <nav>
+      <ul>
+        <li>
+          <a href="#">ЕГЭ</a>
+          <!--
+          <div class="dropdown">
+            <ul>
+                <li><a href="#">Демоверсии</a></li>
+                <li><a href="#">Реальные варианты ЕГЭ</a></li>
+                <li><a href="#">Архив работ</a></li>
+            </ul>
+            </div>
+          -->
+        </li>
+        <li>
+          <a href="#">ОГЭ</a>
+          <!--
+          <div class="dropdown">
+            <ul>
+                <li><a href="#">Демоверсии</a></li>
+                <li><a href="#">Реальные варианты ЕГЭ</a></li>
+                <li><a href="#">Архив работ</a></li>
+            </ul>
+            </div>
+          -->
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <div class="exams">
+      <ul>
+          <li><button class="exam" onclick="showContent('ege')">ЕГЭ</button><li>
+          <li><button class="exam" onclick="showContent('oge')">ОГЭ</button><li>
+      </ul>
+  </div>
+
+  <div id="ege" class="exam-content active">
+      <p>Единый государственный экзамен (ЕГЭ) — это форма государственной итоговой аттестации (ГИА) по образовательным программам <b>среднего</b> общего образования.</p>
+
+      <div class="subjects">
+          <ul>
+              <li><button class="subject" onclick="showDemo('math_ege')">Математика</button><li>
+              <li><button class="subject" onclick="showDemo('inf_ege')">Информатика</button><li>
+          </ul>
+          
+          <a id="math_ege" class="subject-content active" href="math_ege.zip" download>Скачать демоверсии</a>
+          <a id="inf_ege" class="subject-content" href="math_ege.zip" download>Скачать демоверсию</a>
+          
+      </div>
+  </div>
+  
+  <div id="oge" class="exam-content">
+      <p>Основной государственный экзамен (ОГЭ) – это форма государственной итоговой аттестации по образовательным программам <b>основного</b> общего образования.</p>
+      
+      <div class="subjects">
+          <ul>
+              <li><button class="subject" onclick="showDemo('math_oge')">Математика</button><li>
+              <li><button class="subject" onclick="showDemo('inf_oge')">Информатика</button><li>
+          </ul>
+          
+          <a id="math_oge" class="subject-content active" href="math_ege.zip" download>Скачать демоверсию</a>
+          <a id="inf_oge" class="subject-content" href="math_ege.zip" download>Скачать демоверсию</a>
+      </div>
+  </div>
+
+  <script>
+    function showContent(tabId) {
+      var tabContents = document.querySelectorAll('.exam-content');
+      tabContents.forEach(function(content) {
+        content.classList.remove('active');
+      });
+
+      var selectedTab = document.getElementById(tabId);
+      selectedTab.classList.add('active');
+    }
+      
+    function showDemo(subId) {
+        var subContents = document.querySelectorAll('.subject-content');
+        
+        subContents.forEach(function(content) {
+          content.classList.remove('active');
+        });
+
+        var selectedSub = document.getElementById(subId);
+        selectedSub.classList.add('active');
+    }
+  </script>
+  <footer>
+      <a href="index.html" download>На главную</a>
+  </footer>
+</body>
+</html>

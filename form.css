@@ -1,0 +1,66 @@
+/*
+ .contacts-button {
+     background-color: #fdbc44;
+ }
+ .contacts-button::before {
+     background-color: #f88403;
+ }
+ */
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@600&display=swap');
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Comfortaa', cursive;
+  height: 100vh;
+  background-color: #fcd07e;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    border: 2px solid black;
+}
+
+th, td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid black;
+}
+
+td.selected {
+    background-color: #ccc;
+}
+
+th.column-header {
+    background-color: #f2f2f2;
+}
+
+th.row-header {
+    background-color: #e6e6e6;
+}
+
+a {
+    text-decoration: none;
+}
+
+footer {
+    position: fixed;
+    left: 0; 
+    bottom: 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px;
+    width: 100%;
+}

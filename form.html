@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="form.css">
+        <script src="https://kit.fontawesome.com/7b050bb505.js" crossorigin="anonymous"></script>
+                        
+        <title>Контакты</title>
+    </head>
+    <body>
+        <div class="container">
+        <form>
+            <label for="lastName">Фамилия:</label>
+            <input type="text" id="lastName" name="lastName" required>
+            <label for="firstName">Имя:</label>
+            <input type="text" id="firstName" name="firstName" required>
+                    
+            <label for="subject">Предмет:</label>
+            <select id="subject" name="subject" required>
+                <option value="math">Математика</option>
+                <option value="science">Информатика</option>
+            </select>
+                    
+            <label for="grade">Класс:</label>
+            <select id="grade" name="grade" required>
+                <option value="1">1 класс</option>
+                <option value="2">2 класс</option>
+                <option value="3">3 класс</option>
+                <option value="1">4 класс</option>
+                <option value="2">5 класс</option>
+                <option value="3">6 класс</option>
+                <option value="1">7 класс</option>
+                <option value="2">8 класс</option>
+                <option value="3">9 класс</option>
+                <option value="1">10 класс</option>
+                <option value="2">11 класс</option>
+            </select>
+            
+            <table id="myTable">
+                <tr>
+                    <th class="row-header"></th>
+                    <th class="column-header">Пн</th>
+                    <th class="column-header" onclick="toggleColumn(this)">Вт</th>
+                    <th class="column-header" onclick="toggleColumn(this)">Ср</th>
+                    <th class="column-header" onclick="toggleColumn(this)">Чт</th>
+                    <th class="column-header" onclick="toggleColumn(this)">Пт</th>
+                    <th class="column-header" onclick="toggleColumn(this)">Сб</th>
+                    <th class="column-header" onclick="toggleColumn(this)">Вс</th>
+                </tr>
+                <tr>
+                    <th class="row-header">15:00</th>
+                    <td onclick="toggleCell(this)"> </td>
+                    <td onclick="toggleCell(this)"> </td>
+                    <td onclick="toggleCell(this)"> </td>
+                    <td onclick="toggleCell(this)"> </td>
+                    <td onclick="toggleCell(this)"> </td>
+                    <td onclick="toggleCell(this)"> </td>
+                    <td onclick="toggleCell(this)"> </td>
+                </tr>
+                <tr>
+                    <th class="row-header">16:00</th>
+                    <td onclick="toggleCell(this)"> </td>
+                    <td onclick="toggleCell(this)"> </td>
+                    <td onclick="toggleCell(this)"> </td>
+                    <td onclick="toggleCell(this)"> </td>
+                    <td onclick="toggleCell(this)"> </td>
+                    <td onclick="toggleCell(this)"> </td>
+                    <td onclick="toggleCell(this)"> </td>
+                </tr>
+                <tr>
+                    <th class="row-header">17:00</th>
+                    <td onclick="toggleCell(this)"> </td>
+                    <td onclick="toggleCell(this)"> </td>
+                    <td onclick="toggleCell(this)"> </td>
+                    <td onclick="toggleCell(this)"> </td>
+                    <td onclick="toggleCell(this)"> </td>
+                    <td onclick="toggleCell(this)"> </td>
+                    <td onclick="toggleCell(this)"> </td>
+                </tr>
+                <tr>
+                    <th class="row-header">18:00</th>
+                    <td onclick="toggleCell(this)"> </td>
+                    <td onclick="toggleCell(this)"> </td>
+                    <td onclick="toggleCell(this)"> </td>
+                    <td onclick="toggleCell(this)"> </td>
+                    <td onclick="toggleCell(this)"> </td>
+                    <td onclick="toggleCell(this)"> </td>
+                    <td onclick="toggleCell(this)"> </td>
+                </tr>
+                <tr>
+                    <th class="row-header">19:00</th>
+                    <td onclick="toggleCell(this)"> </td>
+                    <td onclick="toggleCell(this)"> </td>
+                    <td onclick="toggleCell(this)"> </td>
+                    <td onclick="toggleCell(this)"> </td>
+                    <td onclick="toggleCell(this)"> </td>
+                    <td onclick="toggleCell(this)"> </td>
+                    <td onclick="toggleCell(this)"> </td>
+                </tr>
+                <tr>
+                    <th class="row-header">20:00</th>
+                    <td onclick="toggleCell(this)"> </td>
+                    <td onclick="toggleCell(this)"> </td>
+                    <td onclick="toggleCell(this)"> </td>
+                    <td onclick="toggleCell(this)"> </td>
+                    <td onclick="toggleCell(this)"> </td>
+                    <td onclick="toggleCell(this)"> </td>
+                    <td onclick="toggleCell(this)"> </td>
+                </tr>
+            </table>
+            <button type="submit">Отправить</button>
+        </form>
+        </div>
+        
+        <script>
+            function goBack() {
+                        window.history.back();
+            }
+            
+            function toggleCell(cell) {
+                        cell.classList.toggle("selected");
+            }
+        </script>
+        <footer>
+            <a href="index.html" download>На главную</a>
+            <button class="back" onclick="goBack()"> Назад</button>
+        </footer>
+    </body>
+</html>
