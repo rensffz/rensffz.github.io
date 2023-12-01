@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="game.css">
+  <img id="robotImage" src="robot.png" style="display: none;">
+  <img id="destinationImage" src="dest.png" style="display: none;">
+  <title>Lightbot</title>
+</head>
+<body>
+  <button id="rulesButton" onclick="openRulesModal()">Правила</button>
+  <div id="rulesModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeRulesModal()">&times;</span>
+        <h2>Правила игры</h2>
+        <p>Вам нужно переместить робота в конечную точку, которая отмечена флажком</p>
+        <ol>
+            <li>Чтобы двигать робота, перетаскивайте команды в специальный контейнер</li>
+            <li>При попытке выйти за границы поля робот разбивается и игра заканчивается проигрышем</li>
+            <li>Избегайте стен: при попытке войти в стену, робот разбивается и игра заканчивается проигрышем. Стены отмечены черными клетками</li>
+            <li>Вам нужно окрасить все ячейки, отмеченные цветом: для этого используйте команду Color</li>
+            <li>Игра завершится только тогда, когда все нужные клетки будут окрашены и робот придёт строго в конечную точку</li>
+        </ol>
+        <p>Удачи!</p>
+      </div>
+  </div>
+  <canvas id="gameCanvas" width="400" height="400"></canvas>
+  
+  <div class="global-commands-container">
+      <div id="commandsContainer" class="commands-container">
+        <div id="up" class="draggable" draggable="true" ondragstart="drag(event)">Up</div>
+        <div id="down" class="draggable" draggable="true" ondragstart="drag(event)">Down</div>
+        <div id="left" class="draggable" draggable="true" ondragstart="drag(event)">Left</div>
+        <div id="right" class="draggable" draggable="true" ondragstart="drag(event)">Right</div>
+        <div id="color" class="draggable" draggable="true" ondragstart="drag(event)">Color</div>
+      </div>
+
+      <div id="historyContainer" class="droppable" ondrop="drop(event)" ondragover="allowDrop(event)">
+        <strong>Контейнер команд</strong>
+        <ul id="commandHistory"></ul>
+      </div>
+      <button onclick="startGame()">Начать</button>
+      <button onclick="restartGame()">Заново</button>
+  </div>
+  
+  <script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+
+    const size = 5;
+    const gridSize = canvas.width / size;
+    const rows = canvas.width / gridSize;
+    const cols = canvas.height / gridSize;
+
+    let robot = { x: 0, y: 0 };
+    let start = { x: 0, y: 0}
+    let destination = { x: 0, y: 0 };
+    let flags = [];
+    let commandHistory = [];
+    let coloredCells = [];
+    let points = [];
+
+    function getRandomCoordinate() {
+      return Math.floor(Math.random() * (rows - 1));
+    }
+
+    function generateRandomCoordinates() {
+      robot.x = getRandomCoordinate();
+      robot.y = getRandomCoordinate();
+
+      start.x = robot.x;
+      start.y = robot.y;
+      
+      do {
+        destination.x = getRandomCoordinate();
+        destination.y = getRandomCoordinate();
+      } while (destination.x === robot.x && destination.y === robot.y);
+
+      flags = [];
+      for (let i = 0; i < 3; i++) {
+        let flag = { x: getRandomCoordinate(), y: getRandomCoordinate() };
+        while (
+          (flag.x === robot.x && flag.y === robot.y) ||
+          (flag.x === destination.x && flag.y === destination.y) ||
+          flags.some(f => f.x === flag.x && f.y === flag.y)
+        ) {
+          flag = { x: getRandomCoordinate(), y: getRandomCoordinate() };
+        }
+        flags.push(flag);
+      }
+      
+      points = [];
+      for (let i = 0; i < 3; i++) {
+          let point = { x: getRandomCoordinate(), y: getRandomCoordinate() };
+          while (
+            (point.x === robot.x && point.y === robot.y) ||
+            (point.x === destination.x && point.y === destination.y) ||
+            points.some(p => p.x === point.x && p.y === point.y) ||
+            flags.some(f => f.x === point.x && f.y === point.y)
+          ) {
+            point = { x: getRandomCoordinate(), y: getRandomCoordinate() };
+          }
+          points.push(point);
+      }
+    }
+      
+      function resetGame() {
+          destination = { x: 0, y: 0 };
+          flags = [];
+          commandHistory = [];
+          const commandList = document.getElementById('commandHistory');
+            commandList.innerHTML = '';
+          coloredCells = [];
+          
+          generateRandomCoordinates();
+      }
+      
+      function restartGame() {
+          robot.x = start.x;
+          robot.y = start.y;
+          
+          commandHistory = [];
+          const commandList = document.getElementById('commandHistory');
+            commandList.innerHTML = '';
+          coloredCells = [];
+      }
+
+      function drawGrid() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.strokeStyle = '#a30692';
+        for (let i = 0; i < rows; i++) {
+          for (let j = 0; j < cols; j++) {
+            ctx.beginPath();
+            ctx.rect(i * gridSize, j * gridSize, gridSize, gridSize);
+
+            if (coloredCells.some(cell => cell.x === i && cell.y === j)) {
+              ctx.fillStyle = '#a30692';
+              ctx.fill();
+            } else {
+                if (points.some(point => point.x === i && point.y === j)) {
+                    ctx.fillStyle = '#f18be6';
+                    ctx.fill();
+                } else {
+                    ctx.fillStyle = '#fff0fe';
+                    ctx.fill();
+                }
+            }
+            ctx.stroke();
+          }
+        }
+      }
+
+      function drawRobot() {
+        const robotImage = document.getElementById('robotImage');
+        ctx.drawImage(robotImage, robot.x * gridSize, robot.y * gridSize, gridSize, gridSize);
+      }
+
+
+    function drawDestination() {
+        const destinationImage = document.getElementById('destinationImage');
+        ctx.drawImage(destinationImage, destination.x * gridSize, destination.y * gridSize, gridSize, gridSize);
+    }
+
+    function drawFlags() {
+      ctx.strokeStyle = '#a30692';
+      ctx.fillStyle = 'black';
+      flags.forEach(flag => {
+        ctx.fillRect(flag.x * gridSize, flag.y * gridSize, gridSize, gridSize);
+      });
+    }
+
+    function moveRobot(direction) {
+      switch (direction) {
+        case 'up':
+          robot.y = robot.y - 1;
+          break;
+        case 'down':
+          robot.y = robot.y + 1;
+          break;
+        case 'left':
+          robot.x = robot.x - 1;
+          break;
+        case 'right':
+          robot.x = robot.x + 1;
+          break;
+        case 'color':
+          coloredCells.push({ x: robot.x, y: robot.y });
+          break;
+      }
+    }
+
+    function checkCollision() {
+      return (
+        robot.x < 0 || robot.x >= rows ||
+        robot.y < 0 || robot.y >= cols ||
+        flags.some(flag => robot.x === flag.x && robot.y === flag.y)
+      );
+    }
+      
+      function coloredAll() {
+          if (points.length !== coloredCells.length) {
+              return false;
+          }
+
+          for (const coloredCell of coloredCells) {
+              if (!points.some(point => point.x === coloredCell.x && point.y === coloredCell.y)) {
+                  return false;
+              }
+          }
+
+          return true;
+      }
+
+    function gameLoop() {
+      drawGrid();
+      drawFlags();
+      drawDestination();
+      drawRobot();
+      
+      requestAnimationFrame(gameLoop);
+    }
+
+    generateRandomCoordinates();
+    gameLoop();
+
+    function executeCommands(commands) {
+        const commandList = document.getElementById('commandHistory');
+          for (const command of commands) {
+            commandHistory.push(command);
+            const listItem = document.createElement('li');
+            listItem.textContent = command;
+            commandList.appendChild(listItem);
+          }
+    }
+
+    function allowDrop(event) {
+      event.preventDefault();
+    }
+
+    function drag(event) {
+      event.dataTransfer.setData('text/plain', event.target.id);
+    }
+
+    function drop(event) {
+      event.preventDefault();
+      const command = event.dataTransfer.getData('text/plain').toLowerCase();
+      executeCommands([command]);
+    }
+      
+    function startGame(event) {
+        let index = 0;
+        
+        function processCommand() {
+            if (index < commandHistory.length) {
+              const command = commandHistory[index];
+
+              switch (command) {
+                case 'up':
+                  moveRobot('up');
+                  break;
+                case 'down':
+                  moveRobot('down');
+                  break;
+                case 'left':
+                  moveRobot('left');
+                  break;
+                case 'right':
+                  moveRobot('right');
+                  break;
+                case 'color':
+                  moveRobot('color');
+                  break;
+              }
+
+              index++;
+              
+              
+              if (checkCollision()) {
+                alert('Game Over!');
+                resetGame();
+              }
+
+              if ((robot.x === destination.x && robot.y === destination.y) &&
+              (index === commandHistory.length) && coloredAll()) {
+                alert('Congratulations! Robot reached the destination!');
+                resetGame();
+              }
+
+              setTimeout(processCommand, 500);
+            }
+          }
+        processCommand();
+    }
+      
+      function openRulesModal() {
+          var modal = document.getElementById('rulesModal');
+          modal.style.display = 'block';
+          modal.classList.add('active');
+          
+      }
+
+      // Функция для закрытия модального окна
+      function closeRulesModal() {
+          var modal = document.getElementById('rulesModal');
+          
+          modal.classList.remove('active');
+          modal.style.display = 'block';
+          
+          setTimeout(function(){
+              modal.style.display = 'none';
+          }, 500);
+      }
+
+      // Закрытие модального окна при клике вне его области
+      window.onclick = function(event) {
+          var modal = document.getElementById('rulesModal');
+          if (event.target === modal) {
+              closeRulesModal();
+          }
+      };
+  </script>
+</body>
+</html>
+
