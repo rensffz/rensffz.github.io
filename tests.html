@@ -3,12 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/7b050bb505.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="styles.css">
     <style>
         body {
           background-color: #fc9a9a;
-          flex-direction: column;
+          display: block;
           color: #611010;
+        }
+        
+        a {
+            color: white;
+        }
+        
+        a:hover {
+            color: #5c0002;
+        }
+        
+        .main {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction:column;
+            justify-content: center;
+            align-items: center;
         }
         
         h1 {
@@ -92,9 +110,16 @@
 
         }
 
-        @media (max-height: 600px) {
+        @media (max-width: 600px) {
             body {
-                height: 100%;
+                font-size: 15px;
+            }
+            .main {
+                width: 100%;
+            }
+            
+            .quiz-container {
+                width: 100%;
             }
         }
         
@@ -103,6 +128,7 @@
   <title>Тестирование</title>
 </head>
 <body>
+    <div class="main">
   <h1>Пройти тестирование</h1>
   <div id="startpage">
       <form id="preview">
@@ -124,7 +150,7 @@
       <button id="startbutton" class="start" onclick="start(event)">Начать тестирование!</button>
       </form>
   </div>
-  
+  <a id="homebutton" href="index.html" style="font-size:25px; margin-top: 20px;"><i class="fa-solid fa-house"></i></a>
   <div id="quiz-container"></div>
   <button id="submitAnswers" onclick="submitAnswers()">Завершить тестирование</button>
   
@@ -133,6 +159,7 @@
       <div id="resultsModalContent" class="modal-content">
           <span class="close" onclick="closeResultsModal()">×</span>
       </div>
+  </div>
   </div>
   <script>
       var correctAnswers = [];
@@ -387,13 +414,15 @@
       }
 
       function showResult(res, correctAnswers, answers) {
+          document.getElementById('homebutton').style.display = 'none';
           document.getElementById('quiz-container').style.display = 'none';
           const countTrue = res.filter(value => value === true).length;
           var div = document.getElementById('results');
           div.style.display = 'flex';
           div.style.flexDirection = 'column';
           div.innerHTML = `<p>Поздравляем, Вы завершили тестирование!</p>
-            <p>Ваш результат за тестовую часть: ${countTrue} из ${questionsHistory.length - 1}</p>`
+            <p>Ваш результат за тестовую часть: ${countTrue} из ${questionsHistory.length - 1}</p>
+`
             if (countTrue < questionsHistory.length - 1) {
                 div.innerHTML += `
                     <button onclick="showModalResults()">Просмотреть результат</button>
@@ -448,6 +477,11 @@
                 });
                 
             }
+            
+            div.innerHTML +=  `
+                <button type="button" onclick="window.location.href='tests.html'">Назад</button>
+                <a href="index.html" style="font-size:25px; margin-top: 20px;"><i class="fa-solid fa-house"></i></a>
+            `
       }
       
       function showModalResults() {

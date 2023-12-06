@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="styles.css">
     <style>
         body {
+            padding-top: 60px;
             background-color: #fcf0a9;
         }
 
@@ -16,7 +17,8 @@
         }
         
         .grid-item {
-            min-height: 50px;
+            min-height: 45px;
+            min-width: 45px;
             border: 1px solid black;
             border-radius: 10px;
             background-color: white;
@@ -24,8 +26,8 @@
         
         .main {
             display: flex;
-            width: 70%;
-            height: 70%;
+            width: 100%;
+            height: 100%;
             align-items: center;
             justify-content: center;
         }
@@ -38,6 +40,7 @@
             display: flex;
             height: 100%;
             width: 20%;
+            justify-content: center;
             align-items: center;
             text-align: center;
             margin-right: 20px;
@@ -85,21 +88,50 @@
             background-color: #c7fa7f;
         }
         
+        @media (max-width: 650px) {
+            
+            .photo {
+                height: auto;
+                margin-left: 20px;
+                width: 90%;
+            }
+            
+            .info {
+                margin-right: 20px;
+                width: 90%;
+                justify-content: flex-start;
+            }
+            
+            body {
+                display: block;
+                padding-top: 100px;
+            }
+            
+            .main {
+                flex-direction: column;
+            }
+            
+            #photo {
+                max-width: 100%;
+            }
+        }
+        
     </style>
     
-    <title>Новая страница</title>
+    <title>Личный кабинет</title>
 </head>
 <body>
     <header>
       <nav>
         <ul>
             <li><a href="index.html" style="font-size:25px"><i class="fa-solid fa-house"></i></a></li>
-            <li><a href="#">Домашние задания</a></li>
-            <li><a href="#">Связаться с преподавателем</a></li>
+            <li><a id="hw" href="#">Домашние задания</a></li>
+            <li><a id="connect" href="#">Связаться с преподавателем</a></li>
             <li><a href="#" style="font-size:25px"><i class="fa-solid fa-user"></i></a></li>
         </ul>
       </nav>
     </header>
+    <div class="main">
         <div class="photo"><img id="photo" src="assets/18601.png" width="200px"></img></div>
         <div class="info">
             <div id="personal"></div>
@@ -130,14 +162,20 @@
             </div>
             
         </div>
+    </div>
 
 <script>
+    var screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+
+    if (screenWidth < 650) {
+        document.getElementById('hw').innerHTML = `<i class="fa-solid fa-book"></i>`;
+        document.getElementById('connect').innerHTML = `<i class="fa-solid fa-comments"></i>`;
+    }
+    
     var urlParams = new URLSearchParams(window.location.search);
     var inputName = urlParams.get('name');
     var inputSurname = urlParams.get('surname');
     var inputGrade = urlParams.get('grade');
-    
-    console.log(inputGrade);
     
     personalInfoDiv = document.getElementById('personal');
     personalInfoDiv.innerHTML = `
@@ -195,6 +233,7 @@
         
         editText.innerHTML = `${editInput.value}`;
     }
+    
     
 
 </script>

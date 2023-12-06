@@ -8,6 +8,7 @@
             body {
                 min-height: 100vh;
                 background-color: #cff1fc;
+                flex-direction: column;
             }
             
             form {
@@ -57,6 +58,7 @@
                 <button type="button" onclick="download()">Скачать</button>
             </form>
         </div>
+        <button style="color: #014585; background-color: #65b3fc; border: none"type="button" onclick="window.history.back()">Назад</button>
         <script>
             const urlParams = new URLSearchParams(window.location.search);
             const exam = urlParams.get('exam');

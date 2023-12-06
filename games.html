@@ -381,7 +381,6 @@
       
     function addCommand(element) {
         const command = element.id;
-        console.log(command);
         executeCommands([command]);
     }
     
@@ -437,7 +436,6 @@
           
       }
 
-      // Функция для закрытия модального окна
       function closeRulesModal() {
           var modal = document.getElementById('rulesModal');
           
@@ -449,10 +447,6 @@
           }, 500);
       }
 
-      function printer() {
-          console.log('hi');
-      }
-      // Закрытие модального окна при клике вне его области
       window.onclick = function(event) {
           var modal = document.getElementById('rulesModal');
           if (event.target === modal) {

@@ -3,19 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://kit.fontawesome.com/7b050bb505.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="styles.css">
     <style>
-        
         body {
+            width: 100%;
             display: block;
             min-height: 100vh;
             padding-top: 50px;
+            padding-bottom: 50px;
             background-color: #cff1fc;
         }
         
         header {
             background-color: #88c3f7;
-            height: 40px;
         }
         
         button {
@@ -36,6 +37,7 @@
             flex-direction: column;
             justify-content: space-evenly;
             align-items: center;
+            width: 100vw;
         }
         
         .demoversions {
@@ -115,6 +117,11 @@
             text-align: center;
         }
         
+        .global-archive-container {
+            max-width: 100%;
+            display: flex;
+            text-align: center;
+        }
         .archive-content {
             text-align: center;
             margin: 0;
@@ -128,7 +135,33 @@
         
         .grid-item {
             border: 1px solid black;
-            padding: 10px;        }
+            padding: 10px;
+            min-width: 123px;
+        }
+        
+        @media (max-width: 650px) {
+            body, button, header, nav a {
+                font-size: 15px;
+            }
+            
+            .subjects {
+                flex-direction: column;
+                justify-content: center;
+            }
+            
+            .demo-content {
+                align-self: center;
+            }
+            
+            .global-archive-container {
+                flex-direction: column;
+            }
+            
+            .dropdown-content {
+                position: absolute;
+                left: 30%;
+            }
+        }
         
     </style>
   <title>Демоверсии</title>
@@ -138,6 +171,7 @@
   <header>
     <nav>
       <ul>
+          <li><a href="index.html" style="font-size:25px"><i class="fa-solid fa-house"></i></a></li>
           <li class="dropdown">
               <a href="#">ЕГЭ</a>
               <div class="dropdown-content">
@@ -169,12 +203,12 @@
       <p>Единый государственный экзамен (ЕГЭ) — это форма государственной итоговой аттестации (ГИА) по образовательным программам <span class="bold">среднего</span> общего образования.</p>
       <div class="subjects">
           <div class="subjects-options">
-              <button class="subject" onclick="showContent('math_ege')">Математика</button>
-              <button class="subject" onclick="showContent('inf_ege')">Информатика</button>
+              <button id="math-ege-button" class="subject" onclick="showContent('math_ege')">Математика</button>
+              <button id="inf-ege-button"class="subject" onclick="showContent('inf_ege')">Информатика</button>
           </div>
           <div class="demo-content">
-              <a id="math_ege" class="demo active" href="math_ege.zip" download>Скачать демоверсии</a>
-              <a id="inf_ege" class="demo" href="inf_ege.zip" download>Скачать демоверсию</a>
+              <a id="math_ege" class="demo active" href="math_ege.zip" download>Скачать демоверсии по математике</a>
+              <a id="inf_ege" class="demo" href="inf_ege.zip" download>Скачать демоверсию по информатике</a>
           </div>
       </div>
   </div>
@@ -182,19 +216,19 @@
       <p>Основной государственный экзамен (ОГЭ) – это форма государственной итоговой аттестации по образовательным программам<span class="bold">основного</span> общего образования.</p>
       <div class="subjects">
           <div class="subjects-options">
-              <button class="subject" onclick="showContent('math_oge')">Математика</button>
-              <button class="subject" onclick="showContent('inf_oge')">Информатика</button>
+              <button id="math-oge-button" class="subject" onclick="showContent('math_oge')">Математика</button>
+              <button id="inf-oge-button" class="subject" onclick="showContent('inf_oge')">Информатика</button>
           </div>
           <div class="demo-content">
-              <a id="math_oge" class="demo active" href="math_oge.zip" download>Скачать демоверсии</a>
-              <a id="inf_oge" class="demo" href="inf_oge.zip" download>Скачать демоверсию</a>
+              <a id="math_oge" class="demo active" href="math_oge.zip" download>Скачать демоверсию по математике</a>
+              <a id="inf_oge" class="demo" href="inf_oge.zip" download>Скачать демоверсию по информатике</a>
           </div>
       </div>
   </div>
 </div>
 <hr style="width: 60%; margin-top: 20px"></hr>
 <p>Архивы экзаменационных работ:</p>
-<div id="archive" class="archive">
+<div id="archive" class="global-archive-container">
         <div class="archive-content">
             <p class="grid-item">Математика</p>
             <div class="archive">
@@ -260,57 +294,11 @@
             });
             document.getElementById(id).classList.add('active');
         }
-    }
-    
-    
-    
-</script>
-  <!--
-  <div id="ege" class="exam-content active">
-      <p>Единый государственный экзамен (ЕГЭ) — это форма государственной итоговой аттестации (ГИА) по образовательным программам <b>среднего</b> общего образования.</p>
-
-      <div class="subjects">
-          <ul>
-              <li><button class="subject" onclick="showDemo('math_ege')">Математика</button><li>
-              <li><button class="subject" onclick="showDemo('inf_ege')">Информатика</button><li>
-          </ul>
-          
-          <a id="math_ege" class="subject-content active" href="math_ege.zip" download>Скачать демоверсии</a>
-          <a id="inf_ege" class="subject-content" href="math_ege.zip" download>Скачать демоверсию</a>
-          
-      </div>
-  </div>
-  
-  <div id="oge" class="exam-content">
-      <p>Основной государственный экзамен (ОГЭ) – это форма государственной итоговой аттестации по образовательным программам <b>основного</b> общего образования.</p>
-      
-      <div class="subjects">
-          <ul>
-              <li><button class="subject" onclick="showDemo('math_oge')">Математика</button><li>
-              <li><button class="subject" onclick="showDemo('inf_oge')">Информатика</button><li>
-          </ul>
-          
-          <a id="math_oge" class="subject-content active" href="math_ege.zip" download>Скачать демоверсию</a>
-          <a id="inf_oge" class="subject-content" href="math_ege.zip" download>Скачать демоверсию</a>
-      </div>
-  </div>
--->
-
-  <script>
-      
-    function showDemo(subId) {
-        var subContents = document.querySelectorAll('.subject-content');
         
-        subContents.forEach(function(content) {
-          content.classList.remove('active');
-        });
-
-        var selectedSub = document.getElementById(subId);
-        selectedSub.classList.add('active');
+        const buttonId = subName + "-" + examType + "-button";
+        
     }
-  </script>
-  <footer>
-      <a href="index.html">На главную</a>
-  </footer>
+ 
+</script>
 </body>
 </html>
