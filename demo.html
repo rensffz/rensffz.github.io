@@ -3,7 +3,134 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="demo.css">
+  <link rel="stylesheet" href="styles.css">
+    <style>
+        
+        body {
+            display: block;
+            min-height: 100vh;
+            padding-top: 50px;
+            background-color: #cff1fc;
+        }
+        
+        header {
+            background-color: #88c3f7;
+            height: 40px;
+        }
+        
+        button {
+            border: none;
+            border-radius: 0;
+            background: linear-gradient(to right, blue, blue 10px, transparent 2px);
+        }
+        button:hover {
+            background-color: #6e9afa;
+        }
+
+        a:hover {
+            color: red;
+        }
+        
+        .main {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            align-items: center;
+        }
+        
+        .demoversions {
+            width: 100%;
+        }
+        
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 15px;
+            display: flex;
+            text-decoration: none;
+        }
+        
+        .exams {
+            width: 100%;
+            display: grid;
+            text-align: left;
+            grid-template-columns: repeat(2, 1fr);
+        }
+        .exams ul {
+            list-style: none;
+        }
+        .subjects {
+            display: flex;
+            width: 80%;
+        }
+        
+        .exam-content {
+            display: none;
+        }
+        .exam-content.active {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .exam-content.active p{
+            margin: 20px;
+        }
+        
+        .subjects-options {
+            width: 30%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .demo-content {
+            display: flex;
+            width: 70%;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .demo.active {
+            display: block;
+        }
+        
+        .demo {
+            display: none;
+        }
+        
+        .archive {
+            display: flex;
+            text-align: center;
+        }
+        
+        .archive-content {
+            text-align: center;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .archive-content.exam {
+            text-align: left;
+        }
+        
+        .grid-item {
+            border: 1px solid black;
+            padding: 10px;        }
+        
+    </style>
   <title>Демоверсии</title>
 </head>
 <body>
@@ -11,40 +138,134 @@
   <header>
     <nav>
       <ul>
-        <li>
-          <a href="#">ЕГЭ</a>
-          <!--
-          <div class="dropdown">
-            <ul>
-                <li><a href="#">Демоверсии</a></li>
-                <li><a href="#">Реальные варианты ЕГЭ</a></li>
-                <li><a href="#">Архив работ</a></li>
-            </ul>
-            </div>
-          -->
-        </li>
-        <li>
-          <a href="#">ОГЭ</a>
-          <!--
-          <div class="dropdown">
-            <ul>
-                <li><a href="#">Демоверсии</a></li>
-                <li><a href="#">Реальные варианты ЕГЭ</a></li>
-                <li><a href="#">Архив работ</a></li>
-            </ul>
-            </div>
-          -->
-        </li>
+          <li class="dropdown">
+              <a href="#">ЕГЭ</a>
+              <div class="dropdown-content">
+                  <a href="demo_download.html?exam=ege">Демоверсии</a>
+                  <a href="real_download.html?exam=ege">Варианты реального ЕГЭ</a>
+                  <a href="#archive">Архив</a>
+              </div>
+          </li>
+          <li class="dropdown">
+              <a href="#">ОГЭ</a>
+              <div class="dropdown-content">
+                  <a href="demo_download.html?exam=oge">Демоверсии</a>
+                  <a href="real_download.html?exam=ege">Варианты реального ОГЭ</a>
+                  <a href="#archive">Архив</a>
+              </div>
+          </li>
       </ul>
     </nav>
   </header>
+
+  <div class="main">
   <div class="exams">
-      <ul>
-          <li><button class="exam" onclick="showContent('ege')">ЕГЭ</button><li>
-          <li><button class="exam" onclick="showContent('oge')">ОГЭ</button><li>
-      </ul>
+     <button class="exam" onclick="showContent('_ege')">ЕГЭ</button>
+     <button class="exam" onclick="showContent('_oge')">ОГЭ</button>
   </div>
 
+<div class="demoversions">
+  <div id="_ege" class="exam-content active">
+      <p>Единый государственный экзамен (ЕГЭ) — это форма государственной итоговой аттестации (ГИА) по образовательным программам <span class="bold">среднего</span> общего образования.</p>
+      <div class="subjects">
+          <div class="subjects-options">
+              <button class="subject" onclick="showContent('math_ege')">Математика</button>
+              <button class="subject" onclick="showContent('inf_ege')">Информатика</button>
+          </div>
+          <div class="demo-content">
+              <a id="math_ege" class="demo active" href="math_ege.zip" download>Скачать демоверсии</a>
+              <a id="inf_ege" class="demo" href="inf_ege.zip" download>Скачать демоверсию</a>
+          </div>
+      </div>
+  </div>
+  <div id="_oge" class="exam-content">
+      <p>Основной государственный экзамен (ОГЭ) – это форма государственной итоговой аттестации по образовательным программам<span class="bold">основного</span> общего образования.</p>
+      <div class="subjects">
+          <div class="subjects-options">
+              <button class="subject" onclick="showContent('math_oge')">Математика</button>
+              <button class="subject" onclick="showContent('inf_oge')">Информатика</button>
+          </div>
+          <div class="demo-content">
+              <a id="math_oge" class="demo active" href="math_oge.zip" download>Скачать демоверсии</a>
+              <a id="inf_oge" class="demo" href="inf_oge.zip" download>Скачать демоверсию</a>
+          </div>
+      </div>
+  </div>
+</div>
+<hr style="width: 60%; margin-top: 20px"></hr>
+<p>Архивы экзаменационных работ:</p>
+<div id="archive" class="archive">
+        <div class="archive-content">
+            <p class="grid-item">Математика</p>
+            <div class="archive">
+                <div class="archive-content exam">
+                    <a class="grid-item" href="inf_oge.zip" download>ЕГЭ-2023</a>
+                    <a class="grid-item" href="inf_oge.zip" download>ЕГЭ-2022</a>
+                    <a class="grid-item" href="inf_oge.zip" download>ЕГЭ-2021</a>
+                    <a class="grid-item" href="inf_oge.zip" download>ЕГЭ-2020</a>
+                    <a class="grid-item" href="inf_oge.zip" download>ЕГЭ-2019</a>
+                </div>
+            
+                <div class="archive-content exam">
+                    <a class="grid-item" href="inf_oge.zip" download>ОГЭ-2023</a>
+                    <a class="grid-item" href="inf_oge.zip" download>ОГЭ-2022</a>
+                    <a class="grid-item" href="inf_oge.zip" download>ОГЭ-2021</a>
+                    <a class="grid-item" href="inf_oge.zip" download>ОГЭ-2020</a>
+                    <a class="grid-item" href="inf_oge.zip" download>ОГЭ-2019</a>
+                </div>
+            </div>
+        </div>
+        <div class="archive-content">
+            <p class="grid-item">Информатика</p>
+            <div class="archive">
+                <div class="archive-content exam">
+                    <a class="grid-item" href="inf_oge.zip" download>ЕГЭ-2023</a>
+                    <a class="grid-item" href="inf_oge.zip" download>ЕГЭ-2022</a>
+                    <a class="grid-item" href="inf_oge.zip" download>ЕГЭ-2021</a>
+                    <a class="grid-item" href="inf_oge.zip" download>ЕГЭ-2020</a>
+                    <a class="grid-item" href="inf_oge.zip" download>ЕГЭ-2019</a>
+                </div>
+                <div class="archive-content exam">
+                    <a class="grid-item" href="inf_oge.zip" download>ОГЭ-2023</a>
+                    <a class="grid-item" href="inf_oge.zip" download>ОГЭ-2022</a>
+                    <a class="grid-item" href="inf_oge.zip" download>ОГЭ-2021</a>
+                    <a class="grid-item" href="inf_oge.zip" download>ОГЭ-2020</a>
+                    <a class="grid-item" href="inf_oge.zip" download>ОГЭ-2019</a>
+                </div>
+        </div>
+</div>
+</div>
+
+<script>
+    function showContent(id) {
+        const split = id.split('_');
+        const subName = split[0];
+        const examType = "_"+split[1];
+        
+        if (subName === "") {
+            var tabContents = document.querySelectorAll('.exam-content');
+            tabContents.forEach(function(content) {
+              content.classList.remove('active');
+            });
+            document.getElementById(id).classList.add('active');
+        } else {
+            
+            var currentDiv = document.getElementById(examType);
+            var tabContents = currentDiv.querySelector(".subjects").querySelector(".demo-content").querySelectorAll(".demo");
+            console.log(tabContents);
+            tabContents.forEach(function(content) {
+                if (content.id != "_${examType}") {
+                    content.classList.remove('active');
+                }
+            });
+            document.getElementById(id).classList.add('active');
+        }
+    }
+    
+    
+    
+</script>
+  <!--
   <div id="ege" class="exam-content active">
       <p>Единый государственный экзамен (ЕГЭ) — это форма государственной итоговой аттестации (ГИА) по образовательным программам <b>среднего</b> общего образования.</p>
 
@@ -73,17 +294,9 @@
           <a id="inf_oge" class="subject-content" href="math_ege.zip" download>Скачать демоверсию</a>
       </div>
   </div>
+-->
 
   <script>
-    function showContent(tabId) {
-      var tabContents = document.querySelectorAll('.exam-content');
-      tabContents.forEach(function(content) {
-        content.classList.remove('active');
-      });
-
-      var selectedTab = document.getElementById(tabId);
-      selectedTab.classList.add('active');
-    }
       
     function showDemo(subId) {
         var subContents = document.querySelectorAll('.subject-content');
@@ -97,7 +310,7 @@
     }
   </script>
   <footer>
-      <a href="index.html" download>На главную</a>
+      <a href="index.html">На главную</a>
   </footer>
 </body>
 </html>

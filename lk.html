@@ -3,36 +3,133 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="lk.css">
-                
+        <link rel="stylesheet" href="styles.css">
+        <style>
+            body {
+                padding-top: 40px;
+                display: block;
+                min-height: 100vh;
+                background-color: #fcf0a9;
+                flex-direction: column;
+            }
+            
+            .main {
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+                height: 100%;
+                justify-content: center;
+                align-items: center;
+            }
+            
+            form {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+            }
+            
+            .container {
+                width: 80%;
+                background-color: #fce979;
+                padding: 20px;
+                border-radius: 8px;
+            }
+            
+            .errormsg {
+                display: none;
+                margin-top: 15px;
+                background-color: #fcb188;
+                padding: 20px;
+                border-radius: 8px;
+            }
+        
+            button:hover {
+                background-color: #fcba4e;
+            }
+        </style>
         <title>Личный кабинет</title>
     </head>
     <body>
-        <div class="container">
-            <form>
-                <input type="text" id="lastName" name="lastName" required placeholder="Фамилия">
+        <div class="main">
+            <div class="container">
+                <form>
+                    <input type="text" id="lastName" name="lastName" required placeholder="Фамилия">
 
-                <input type="text" id="firstName" name="firstName" required placeholder="Имя">
-                
-                <input type="text" id="email" name="email" required placeholder="e-mail">
+                    <input type="text" id="firstName" name="firstName" required placeholder="Имя">
+                    
+                    <input type="text" id="email" name="email" required placeholder="e-mail">
 
-                <label for="grade">Класс:</label>
-                <select id="grade" name="grade" required>
-                    <option value="1">1 класс</option>
-                    <option value="2">2 класс</option>
-                    <option value="3">3 класс</option>
-                    <option value="3">4 класс</option>
-                    <option value="3">5 класс</option>
-                    <option value="3">6 класс</option>
-                    <option value="3">7 класс</option>
-                    <option value="3">8 класс</option>
-                    <option value="3">9 класс</option>
-                    <option value="3">10 класс</option>
-                    <option value="3">11 класс</option>
-                </select>
+                    <label for="grade">Класс:</label>
+                    <select id="grade" name="grade" required>
+                        <option value="1">1 класс</option>
+                        <option value="2">2 класс</option>
+                        <option value="3">3 класс</option>
+                        <option value="4">4 класс</option>
+                        <option value="5">5 класс</option>
+                        <option value="6">6 класс</option>
+                        <option value="7">7 класс</option>
+                        <option value="8">8 класс</option>
+                        <option value="9">9 класс</option>
+                        <option value="10">10 класс</option>
+                        <option value="11">11 класс</option>
+                    </select>
 
-                <button type="submit">Отправить</button>
-            </form>
+                    <button type="button" onclick="redirectToNewPage()">Войти/зарегистрироваться</button>
+                </form>
+            </div>
+            
+            <div id="err" class="errormsg"></div>
         </div>
+        
+        <script>
+            function redirectToNewPage() {
+                err = document.getElementById("err");
+                
+                var redirect = true;
+                
+                err.innerHTML = ``;
+                
+                var name = document.getElementById("firstName").value;
+                if (name == "") {
+                    redirect = false;
+                    err.innerHTML = `
+                        <p>Заполните, пожалуйста, поле "Имя"</p>
+                    `
+                }
+                
+                var surname = document.getElementById("lastName").value;
+                if (surname == "") {
+                    redirect = false;
+                    err.innerHTML += `
+                        <p>Заполните, пожалуйста, поле "Фамилия"</p>
+                    `
+                }
+                
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                var email = document.getElementById("email").value;
+                if (email != "" && !emailRegex.test(email)) {
+                    redirect = false;
+                    err.innerHTML += `
+                        <p>Неверно заполнен e-mail</p>
+                    `
+                }
+                
+                
+                var grade = document.getElementById("grade").value;
+
+                var encodedName = encodeURIComponent(name);
+                var encodedSurname = encodeURIComponent(surname);
+                var encodedGrade = encodeURIComponent(grade);
+
+                var newPageURL = "authorized.html?name=" + encodedName + "&surname=" + encodedSurname + "&grade=" + encodedGrade;
+                if (redirect) {
+                    window.location.href = newPageURL;
+                } else {
+                    err.style.display = 'block';
+                }
+            }
+        </script>
     </body>
 </html>

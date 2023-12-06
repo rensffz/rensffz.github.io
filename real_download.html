@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="styles.css">
+        <style>
+            body {
+                min-height: 100vh;
+                background-color: #cff1fc;
+            }
+            
+            form {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+            }
+            
+            .container {
+                width: 80%;
+                background-color: #88c3f7;
+                padding: 20px;
+                border-radius: 8px;
+            }
+        
+            button:hover {
+                background-color: #6e9afa;
+            }
+            
+        </style>
+        <title>Скачать вариант ЕГЭ</title>
+    </head>
+    <body>
+        <div class="container">
+            <form>
+                <select id="exam" name="exam" required>
+                    <option value="ege">ЕГЭ</option>
+                    <option value="oge">ОГЭ</option>
+                </select>
+                
+                <label for="subject">Выберите предмет:</label>
+                <select id="subject" name="subject" required>
+                    <option value="math">Математика</option>
+                    <option value="inf">Информатика</option>
+                </select>
+                
+                <label for="year">Выберите год:</label>
+                <select id="year" name="year" required>
+                    <option value="2023">2023</option>
+                    <option value="2022">2022</option>
+                    <option value="2022">2021</option>
+                    <option value="2022">2020</option>
+                    <option value="2022">2019</option>
+                </select>
+                <button type="button" onclick="download()">Скачать</button>
+            </form>
+        </div>
+        <script>
+            const urlParams = new URLSearchParams(window.location.search);
+            const exam = urlParams.get('exam');
+            
+            if (exam) {
+                const selectElement = document.getElementById('exam');
+                selectElement.value = exam;
+            }
+            
+            function download() {
+                const ex = document.getElementById('exam').value;
+                const subject = document.getElementById('subject').value;
+                const year = document.getElementById('year').value;
+                
+                const fileName = subject + "_" + ex + "_" + year + ".pdf";
+                
+                var link = document.createElement('a');
+                link.href = "files/real/" + fileName;
+                link.download = fileName;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+            
+        </script>
+    </body>
+</html>

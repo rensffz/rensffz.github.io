@@ -3,17 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
-    <title>Главная страница</title>
+        <link rel="stylesheet" href="styles.css">
+            <title>Главная страница</title>
+            <style>
+                button {
+                    padding: 30px;
+                    margin: 0;
+                    font-size: 25px;
+                    border-radius: 0;
+                    box-sizing: border-box;
+                    border: none;
+                    z-index: 1;
+                    font-size: 25px;
+                    color: #fff;
+                    position: relative;
+                }
+                
+                button::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 20px;
+                    height: 100%;
+                    background-color: #f88403;
+                    transition: width 0.3s ease;
+                    z-index: -1;
+                }
+                button:hover::before {
+                    width: 100%;
+                }
+                
+                .buttons-container {
+                    display: grid;
+                    grid-template-columns: repeat(2, 1fr);
+                    gap: 0;
+                    height: 100vh;
+                    width: 100%;
+                    margin: 0 auto;
+                }
+                
+                .demo-button {
+                    background-color: #6279f7;
+                }
+                .demo-button:hover {
+                    background-color: #6279f7;
+                }
+                .demo-button::before {
+                    background-color: #052bf8;
+                }
+
+                .news-button {
+                    background-color: #aafa88;
+                }
+                .news-button:hover {
+                    background-color: #aafa88;
+                }
+                .news-button::before {
+                    background-color: #277e02;
+                }
+
+                .tests-button {
+                    background-color: #ff6464;
+                }
+                .tests-button:hover {
+                    background-color: #ff6464;
+                }
+                .tests-button::before {
+                    background-color: #fe1515;
+                }
+                .contacts-button {
+                    background-color: #fdbc44;
+                }
+                .contacts-button:hover {
+                    background-color: #fdbc44;
+                }
+                .contacts-button::before {
+                    background-color: #f88403;
+                }
+
+                .games-button {
+                    background-color: #f18be6;
+                }
+                .games-button:hover {
+                    background-color: #f18be6;
+                }
+                .games-button::before {
+                    background-color: #a30692;
+                }
+
+                .lk-button {
+                    background-color: #ffea6e;
+                }
+                .lk-button:hover {
+                    background-color: #ffea6e;
+                }
+                .lk-button::before {
+                    background-color: #e9d70f;
+                }
+
+                @media (max-width: 600px) {
+                    .buttons-container {
+                        grid-template-columns: 1fr;
+                    }
+                }
+            </style>
+            
 </head>
 <body>
     <div class="buttons-container">
-        <button class="button demo-button" onclick="window.location.href='demo.html'">Посмотреть демоверсии</button>
-        <button class="button news-button" onclick="window.location.href='news.html'">Новости</button>
-        <button class="button contacts-button" onclick="window.location.href='contacts.html'">Контакты</button>
-        <button class="button tests-button" onclick="window.location.href='tests.html'">Пройти тестирование</button>
-        <button class="button games-button" onclick="window.location.href='games.html'">Сыграть!</button>
-        <button class="button lk-button" onclick="window.location.href='lk.html'">Личный кабинет</button>
+        <button class="demo-button" onclick="window.location.href='demo.html'">Посмотреть демоверсии</button>
+        <button class="news-button" onclick="window.location.href='news.html'">Новости</button>
+        <button class="contacts-button" onclick="window.location.href='contacts.html'">Контакты</button>
+        <button class="tests-button" onclick="window.location.href='tests.html'">Пройти тестирование</button>
+        <button class="games-button" onclick="window.location.href='games.html'">Сыграть!</button>
+        <button class="lk-button" onclick="window.location.href='lk.html'">Личный кабинет</button>
     </div>
 </body>
 </html>

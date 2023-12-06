@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/7b050bb505.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background-color: #fcf0a9;
+        }
+
+        nav a:hover {
+          font-weight: bold;
+          color: red;
+        }
+        
+        .grid-item {
+            min-height: 50px;
+            border: 1px solid black;
+            border-radius: 10px;
+            background-color: white;
+        }
+        
+        .main {
+            display: flex;
+            width: 70%;
+            height: 70%;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .text {
+            text-align: center;
+        }
+        
+        .photo {
+            display: flex;
+            height: 100%;
+            width: 20%;
+            align-items: center;
+            text-align: center;
+            margin-right: 20px;
+        }
+        
+        .info {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            width: 55%;
+            justify-content: center;
+            align-items: center;
+            margin-left: 20px;
+        }
+        
+        #personal {
+            display: grid;
+            width: 100%;
+            grid-template-columns: repeat(3, 1fr);
+            align-items: center;
+        }
+        
+        #schedule {
+            display: grid;
+            width: 100%;
+            grid-template-columns: repeat(7, 1fr);
+            text-align: center;
+            color: #243b04;
+        }
+        
+        .edit-input {
+            display: none;
+            width: 80%;
+        }
+        
+        .ok {
+            display: none
+        }
+        
+        button {
+            border: none;
+        }
+        
+        button:hover {
+            background-color: #c7fa7f;
+        }
+        
+    </style>
+    
+    <title>Новая страница</title>
+</head>
+<body>
+    <header>
+      <nav>
+        <ul>
+            <li><a href="index.html" style="font-size:25px"><i class="fa-solid fa-house"></i></a></li>
+            <li><a href="#">Домашние задания</a></li>
+            <li><a href="#">Связаться с преподавателем</a></li>
+            <li><a href="#" style="font-size:25px"><i class="fa-solid fa-user"></i></a></li>
+        </ul>
+      </nav>
+    </header>
+        <div class="photo"><img id="photo" src="assets/18601.png" width="200px"></img></div>
+        <div class="info">
+            <div id="personal"></div>
+            <div id="schedule">
+                <p>Пн</p>
+                <p>Вт</p>
+                <p>Ср</p>
+                <p>Чт</p>
+                <p>Пт</p>
+                <p>Сб</p>
+                <p>Вс</p>
+                
+                <div id="monday" class="grid-item" style="background-color: #c7fa7f"></div>
+                <div id="tuesday" class="grid-item"></div>
+                <div id="wednesday" class="grid-item"></div>
+                <div id="thursday" class="grid-item" style="background-color: #c7fa7f"></div>
+                <div id="friday" class="grid-item"></div>
+                <div id="saturday" class="grid-item"></div>
+                <div id="sunday" class="grid-item"></div>
+                
+                <p>16:00</p>
+                <p></p>
+                <p></p>
+                <p>16:00</p>
+                <p></p>
+                <p></p>
+                <p></p>
+            </div>
+            
+        </div>
+
+<script>
+    var urlParams = new URLSearchParams(window.location.search);
+    var inputName = urlParams.get('name');
+    var inputSurname = urlParams.get('surname');
+    var inputGrade = urlParams.get('grade');
+    
+    console.log(inputGrade);
+    
+    personalInfoDiv = document.getElementById('personal');
+    personalInfoDiv.innerHTML = `
+            <p>Имя: </p>
+            <p id="name" class="text">
+                <input type="text" class="edit-input" id="nameEdit">
+                <span id="nameText">${inputName}</span>
+            </p>
+            <button id="nameEditButton" class="edit" onclick="edit('name')">ред.</button>
+            <button id="nameOkButton" class="ok" onclick="accept('name')">OK</button>
+    
+            <p>Фамилия: </p>
+            <p id="surname" class="text">
+                <input type="text" class="edit-input" id="surnameEdit">
+                <span id="surnameText">${inputSurname}</span>
+            </p>
+            <button id="surnameEditButton" class="edit" onclick="edit('surname')">ред.</button>
+            <button id="surnameOkButton" class="ok" onclick="accept('surname')">OK</button>
+        
+            <p>Статистика выполненных работ: </p>
+            <p id="statistics" class="text">${inputGrade}</p>
+            <p></p>
+        
+            <p>Расписание: </p>
+            <p></p>
+            <button class="edit" onclick="window.location.href='form.html'">ред.</button>
+    
+    
+        `
+
+    function edit(id) {
+        var editInput = document.getElementById(`${id}Edit`);
+        var editText = document.getElementById(`${id}Text`);
+        var editButton = document.getElementById(`${id}EditButton`);
+        var okButton = document.getElementById(`${id}OkButton`);
+        
+        
+        editInput.style.display = 'inline-block';
+        editText.style.display = 'none';
+        editButton.style.display = 'none';
+        okButton.style.display = 'inline-block';
+    }
+    
+    function accept(id) {
+        var editInput = document.getElementById(`${id}Edit`);
+        var editText = document.getElementById(`${id}Text`);
+        var editButton = document.getElementById(`${id}EditButton`);
+        var okButton = document.getElementById(`${id}OkButton`);
+        
+        
+        editInput.style.display = 'none';
+        editText.style.display = 'inline-block';
+        editButton.style.display = 'inline-block';
+        okButton.style.display = 'none';
+        
+        editText.innerHTML = `${editInput.value}`;
+    }
+    
+
+</script>
+
+</body>
+</html>

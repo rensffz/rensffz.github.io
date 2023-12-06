@@ -3,14 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="contacts.css">
+    <link rel="stylesheet" href="styles.css">
     <script src="https://kit.fontawesome.com/7b050bb505.js" crossorigin="anonymous"></script>
-
+    <style>
+        body {
+            flex-direction: column;
+            background-color: #fcd07e;
+        }
+        
+        a {
+            color: red;
+        }
+        .icon-container a {
+            font-size: 50px;
+            color: black;
+            padding: 10px;
+        }
+        #number {
+            font-size: 25px;
+            color: red;
+        }
+    </style>
     <title>Контакты</title>
 </head>
 <body>
     <p>Вы можете связаться с преподавателем по номеру телефона</p>
-    <p class="number">8 (800) 555-35-35</p>
+    <p id="number">8 (800) 555-35-35</p>
     <p>в социальных сетях</p>
     <div class="icon-container">
         <a href="https://vk.com/l1001111101100110000111110101100" target="_blank"><i class="fa-brands fa-vk"></i></a>

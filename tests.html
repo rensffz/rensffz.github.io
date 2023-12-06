@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+          background-color: #fc9a9a;
+          flex-direction: column;
+          color: #611010;
+        }
+        
+        h1 {
+            text-align: center;
+        }
+
+        button {
+            border: none;
+            margin: 0;
+            margin-top: 20px;
+        }
+        
+        input, select {
+            color: #611010;
+            width: auto;
+        }
+        
+        #startpage, #results {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 70%;
+          height: auto;
+          background-color: #ff6464;
+          padding: 20px;
+          border-radius: 8px;
+        }
+
+        #quiz-container {
+            display: none;
+        }
+
+        #quiz-container.active {
+            display: block;
+        }
+        
+        #submitAnswers {
+            display: none;
+            margin-bottom: 5%;
+        }
+        
+        .new-div {
+            background-color: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .options-container {
+            width: 100%;
+            float: left;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .draggable-container {
+            display: flex;
+            justify-content: center;
+        }
+        
+        .draggable.dragged {
+            cursor: default;
+            background-color: #dbccd7;
+        }
+        
+        .comparing-table {
+            display: grid;
+            align-items: center;
+            margin-top: 10px;
+            gap: 10px;
+            grid-template-columns: repeat(2, 1fr);
+        }
+        
+        .modal-content {
+            max-height: 60%;
+
+        }
+
+        @media (max-height: 600px) {
+            body {
+                height: 100%;
+            }
+        }
+        
+        
+    </style>
+  <title>Тестирование</title>
+</head>
+<body>
+  <h1>Пройти тестирование</h1>
+  <div id="startpage">
+      <form id="preview">
+      <div class="subject-selector">
+          <label for="subject">Выберите предмет:</label>
+          <select style="width: 80%" id="subject" name="subject" class="subj-select" required>
+              <option value="math">Математика</option>
+              <option value="inf">Информатика</option>
+          </select>
+      </div>
+      
+      <div class="exam-selector">
+          <label for="exam">Выберите экзамен:</label>
+          <select style="width: 80%" id="exam" name="exam" class="exam-select"required>
+              <option value="ege">ЕГЭ</option>
+              <option value="oge">ОГЭ</option>
+          </select>
+      </div>
+      <button id="startbutton" class="start" onclick="start(event)">Начать тестирование!</button>
+      </form>
+  </div>
+  
+  <div id="quiz-container"></div>
+  <button id="submitAnswers" onclick="submitAnswers()">Завершить тестирование</button>
+  
+  <div id="results" style="display: none"></div>
+  <div id="resultsModal" class="modal">
+      <div id="resultsModalContent" class="modal-content">
+          <span class="close" onclick="closeResultsModal()">×</span>
+      </div>
+  </div>
+  <script>
+      var correctAnswers = [];
+      var answers = [];
+      var questionsHistory = [];
+      
+      function executeCommand(command, id) {
+          const commandList = document.getElementById(id);
+          while (commandList.firstChild) {
+                  commandList.removeChild(commandList.firstChild);
+            }
+          const listItem = document.createElement('p');
+          listItem.textContent = command.toLowerCase();
+          commandList.appendChild(listItem);
+          
+          commandAction = document.getElementById(command);
+          commandAction.draggable = false;
+          commandAction.classList.add('dragged');
+
+      }
+      function allowDrop(event) {
+        event.preventDefault();
+      }
+
+      function drag(event) {
+        event.dataTransfer.setData('text/plain', event.target.id);
+      }
+
+      function drop(event, id) {
+        event.preventDefault();
+        const command = event.dataTransfer.getData('text/plain');
+        executeCommand(command, id);
+      }
+      
+      function start(event) {
+          event.preventDefault();
+          document.getElementById('submitAnswers').style.display = 'block';
+          var startPage = document.getElementById('startpage');
+          var quizContainer = document.getElementById('quiz-container');
+          
+          document.body.style.height = '100%';
+          
+          startPage.style.display = 'none';
+          quizContainer.classList.add('active');
+          
+          loadQuestion();
+        }
+
+        function loadQuestion() {
+          var subjSelect = document.querySelector('.subj-select');
+          var selectedSubject = subjSelect.options[subjSelect.selectedIndex].value;
+          
+          var examSelect = document.querySelector('.exam-select');
+          var selectedExam = examSelect.options[examSelect.selectedIndex].value;
+          
+          const questContainer = document.getElementById("quiz-container");
+          
+          const shuffle = (array) => {
+                  let m = array.length, t, i;
+
+                  // Пока есть элементы для перемешивания
+                  while (m) {
+
+                  // Взять оставшийся элемент
+                  i = Math.floor(Math.random() * m--);
+
+                  // И поменять его местами с текущим элементом
+                  t = array[m];
+                  array[m] = array[i];
+                  array[i] = t;
+              }
+            return array;
+          }
+
+          fetch('test.json')
+                  .then(response => response.json())
+                  .then(data => {
+
+                    var questions = data[selectedSubject][selectedExam];
+
+                    for (var i = 0; i < Object.keys(questions).length; i++) {
+                        
+                        var newDiv = document.createElement("div");
+                        newDiv.className = "new-div";
+                        
+                        currentQuestionsVariants = questions[i + 1];
+                        var randomQuestionIndex = Math.floor(Math.random() * currentQuestionsVariants.length);
+                        
+                        currentQuestion = currentQuestionsVariants[randomQuestionIndex];
+                        
+                        correctAnswers.push(getCorrect(currentQuestion));
+                        
+                        if (currentQuestion.hasOwnProperty("question")) {
+                            questionsHistory.push(currentQuestion.question);
+                            newDiv.innerHTML = `
+                              <h2>${currentQuestion.question}</h2>
+                            `;
+                            if (currentQuestion.hasOwnProperty("options")) {
+                                if (i == 0) {
+                                    newDiv.innerHTML += `
+                                        <div class="options-container">
+                                            ${shuffle(currentQuestion.options).map(option => `
+                                            <label>
+                                            <input type="radio" name="menu-option" value="${option.text}">${option.text}</label>`).join("")}
+                                        </div>
+                                    `;
+                                } else {
+                                    newDiv.innerHTML += `
+                                        <div class="options-container">
+                                                ${shuffle(currentQuestion.options).map(option => `
+                                                <label>
+                                                <input type="checkbox" name="menu-option" value="${option.text}">
+                                                ${option.text}</label>`).join("")}
+                                        </div>
+                                    `;
+                                }
+                            } else if (currentQuestion.hasOwnProperty("answer")) {
+                                newDiv.innerHTML += `
+                                    <input type="number" id="numberAnswer" name="numberAnswer">
+                                `;
+                                
+                            } else {
+                                newDiv.innerHTML += `
+                                    <div class="draggable-container">
+                                        ${shuffle(currentQuestion.left).map((element, index) => `<div id="${element}" class="draggable" draggable="true" ondragstart="drag(event)">${element}</div>`).join("")}
+                                    </div>
+                                    
+                                    <div class="comparing-table">
+                                          ${shuffle(currentQuestion.right).map((element, index) => `<div id="droppable${index + 1}" class="droppable" ondrop="drop(event, 'dropbox${index + 1}')" ondragover="allowDrop(event)">
+                                                <span id="dropbox${index + 1}"></span>
+                                          </div>
+                                          <p id="definition${index + 1}">${element}</p>`).join("")}
+                                    </div>
+                                `;   
+                            }
+ 
+                        } else {
+                            questionsHistory.push(currentQuestion);
+                            newDiv.innerHTML = `
+                              <h2>${currentQuestion}</h2>
+                            <input type="text" id="textAnswer" name="textAnswer">
+                            `;
+                        }
+                        
+                        questContainer.appendChild(newDiv);
+                    }
+                  })
+                  .catch(error => console.error('Error loading JSON:', error));
+      }
+      
+      function submitAnswers() {
+          document.getElementById('submitAnswers').style.display = 'none';
+          const questionContainers = document.querySelectorAll('.new-div');
+          
+          questionContainers.forEach((container, index) => {
+
+              if (index < 2) {
+                  var checked = container.querySelectorAll('input[name="menu-option"]:checked');
+                  var choice = [];
+                  
+                  checked.forEach(function(checkbox) {
+                      choice.push(checkbox.value);
+                  });
+                  
+              } else if (index == 2) {
+                  var inputElement = document.getElementById("numberAnswer");
+                  var choice = parseInt(inputElement.value);
+              } else if (index == 3) {
+                  var choice = {}
+
+                  for (let i = 0; i < document.querySelector('.comparing-table').querySelectorAll('div').length; i++) {
+                      var dropParagraph = document.getElementById(`dropbox${i + 1}`).querySelector('p');
+                      var compareDef = document.getElementById(`definition${i + 1}`)
+                      if (dropParagraph) {
+                          var droppedValue = dropParagraph.textContent || dropParagraph.innerText;
+                      } else {
+                          var droppedValue = null;
+                      }
+                      var comparingValue = compareDef.textContent || compareDef.innerText;
+                      choice[droppedValue] = comparingValue;
+                  }
+              } else {
+                  var inputElement = document.getElementById("textAnswer");
+                  var choice = inputElement.value;
+              }
+              
+              answers.push(choice);
+          });
+          
+          res = checkAnswers(correctAnswers, answers);
+          showResult(res, correctAnswers, answers);
+      }
+      
+      function checkAnswers(correctAnswers, answers) {
+          var results = [];
+          answers.forEach((answer, index) => {
+              if (index < 2) {
+                  if (answer.length === 0) {
+                      results.push(false)
+                  } else {
+                      for (let i = 0; i < answer.length; i++) {
+                          if (correctAnswers[index].includes(answer[i])) {
+                              results.push(true);
+                          } else {
+                              results.push(false);
+                          }
+                      }
+                  }
+              } else if (index == 2) {
+                  if (answer == correctAnswers[index]) {
+                      results.push(true);
+                  } else {
+                      results.push(false);
+                  }
+              } else if (index == 3) {
+                  keys = Object.keys(answer);
+                  var toPush = true;
+                  for (const key of keys) {
+                      if (answer[key] != correctAnswers[index][key] || key === null) {
+                          toPush = false;
+                          break
+                      }
+                  }
+                  results.push(toPush);
+              } else {
+                  results.push(null);
+              }
+          });
+          
+          return results;
+      }
+      
+    
+      function getCorrect(question) {
+          var correctValues = [];
+          if (question.hasOwnProperty("options")) {
+              const vars = question.options;
+              
+              for (const item of vars) {
+                if (item.is_correct) {
+                  correctValues.push(item.text);
+                }
+              }
+          } else if (question.hasOwnProperty("answer")) {
+              correctValues = question.answer;
+          } else if (question.hasOwnProperty("pairs")) {
+              correctValues = question.pairs;
+          } else {
+              correctValues = null;
+          }
+        return correctValues;
+      }
+
+      function showResult(res, correctAnswers, answers) {
+          document.getElementById('quiz-container').style.display = 'none';
+          const countTrue = res.filter(value => value === true).length;
+          var div = document.getElementById('results');
+          div.style.display = 'flex';
+          div.style.flexDirection = 'column';
+          div.innerHTML = `<p>Поздравляем, Вы завершили тестирование!</p>
+            <p>Ваш результат за тестовую часть: ${countTrue} из ${questionsHistory.length - 1}</p>`
+            if (countTrue < questionsHistory.length - 1) {
+                div.innerHTML += `
+                    <button onclick="showModalResults()">Просмотреть результат</button>
+                `
+                var modal = document.getElementById('resultsModalContent');
+                res.forEach((r, index) => {
+                    if (r === false) {
+                        if (index != 3) {
+                            var ans = answers[index];
+                            console.log(ans);
+                            if (ans == [] || isNaN(ans))
+                                ans = "";
+                            modal.innerHTML += `
+                                <p>Вопрос ${index + 1}. ${questionsHistory[index]}</p>
+                                <p>Ваш ответ:   ${ans}</p>
+                                <p>Верный ответ:   ${correctAnswers[index]}</p>
+                                <hr style="width: 80%"></hr>
+                            `
+                        } else {
+                            modal.innerHTML += `
+                                <p>Вопрос ${index + 1}. ${questionsHistory[index]}</p>
+                          `
+                          modal.innerHTML += `
+                              <p>Ваш ответ:</p>
+                        `
+                          var userAnswerList = document.createElement('ul');
+                          for (const userKey of Object.keys(answers[index])) {
+                              var listItem = document.createElement('li');
+                              if (userKey != 'null') {
+                                  console.log(userKey);
+                                  var textNode = document.createTextNode(`${userKey}: ${answers[index][userKey]}`);
+                                  listItem.appendChild(textNode);
+                                  userAnswerList.appendChild(listItem);
+                              }
+                          }
+                          
+                         modal.appendChild(userAnswerList);
+                          
+                          var correctAnswerList = document.createElement('ul');
+                          for (const key of Object.keys(correctAnswers[index])) {
+                              var listItem = document.createElement('li');
+                              var textNode = document.createTextNode(`${key}: ${correctAnswers[index][key]}`);
+                              listItem.appendChild(textNode);
+                              correctAnswerList.appendChild(listItem);
+                          }
+                          modal.innerHTML += `
+                              <p>Верный ответ:</p>
+                        `
+                         modal.appendChild(correctAnswerList);
+                        }
+                    }
+                });
+                
+            }
+      }
+      
+      function showModalResults() {
+          var modal = document.getElementById('resultsModal');
+          modal.style.display = 'block';
+          modal.classList.add('active');
+      }
+      
+      // Функция для закрытия модального окна
+      function closeResultsModal() {
+          var modal = document.getElementById('resultsModal');
+          
+          modal.classList.remove('active');
+          modal.style.display = 'block';
+          
+          setTimeout(function(){
+              modal.style.display = 'none';
+          }, 500);
+      }
+
+      // Закрытие модального окна при клике вне его области
+      window.onclick = function(event) {
+          var modal = document.getElementById('resultsModal');
+          if (event.target === modal) {
+              closeResultsModal();
+          }
+      };
+      
+  </script>
+</body>
+</html>
+
