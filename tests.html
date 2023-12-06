@@ -490,7 +490,6 @@
           modal.classList.add('active');
       }
       
-      // Функция для закрытия модального окна
       function closeResultsModal() {
           var modal = document.getElementById('resultsModal');
           
@@ -502,7 +501,6 @@
           }, 500);
       }
 
-      // Закрытие модального окна при клике вне его области
       window.onclick = function(event) {
           var modal = document.getElementById('resultsModal');
           if (event.target === modal) {
