@@ -69,7 +69,7 @@
           list-style: none;
         }
         
-        #rulesButton {
+        #rulesButton, #homeButton {
             width: auto;
             height: auto;
           position: absolute;
@@ -78,9 +78,14 @@
           left: 20px;
         }
         
+        #homeButton {
+            top: 70px;
+        }
+        
         @media (max-width: 850px) {
             body {
                 flex-direction: column;
+                height: 100%;
             }
             
             global-commands-container.button {
@@ -92,9 +97,11 @@
                 margin-top: 20px;
                 width: 90%;
                 height: auto;
+                max-height: 400px;
+                max-width: 400px;
             }
             
-            #rulesButton {
+            #rulesButton, #homeButton {
               position: static;
             }
             
