@@ -386,6 +386,9 @@
       event.preventDefault();
       const command = event.dataTransfer.getData('text/plain').toLowerCase();
       executeCommands([command]);
+      
+      var container = document.getElementById('historyContainer');
+      container.scrollTop = container.scrollHeight;
     }
       
     function addCommand(element) {

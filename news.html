@@ -29,9 +29,25 @@
                 .buttons-container.active{
                     height: 100%;
                     display: flex;
+                    position: relative;
                     flex-direction: column;
                     justify-content: center;
                     align-items: center;
+                }
+                
+                #search-input {
+                    position: absolute;
+                    top: 5px;
+                    width: 50%;
+                }
+                
+                
+                .new-ref {
+                    display: block;
+                }
+                
+                .new-ref.hidden {
+                    display: none;
                 }
                 
                 .news-container {
@@ -91,10 +107,11 @@
         </nav>
     </header>
     
-    <div class="buttons-container active">
-        <a class="new-ref" onclick="showNew('new1')">Новость 1</a>
+    <div id="news" class="buttons-container active">
+        <input type="text" id="search-input" placeholder="Введите слово для поиска" oninput="search()">
+        <a class="new-ref" onclick="showNew('new1')">АБВГД</a>
         <a class="new-ref" onclick="showNew('new2')">Новость 2</a>
-        <a class="new-ref" onclick="showNew('new3')">Новость 3</a>
+        <a class="new-ref" onclick="showNew('new3')">ЕЖЗИК</a>
         <a class="new-ref" onclick="showNew('new4')">Новость 4</a>
         <a class="new-ref" onclick="showNew('new5')">Новость 5</a>
     </div>
@@ -177,6 +194,37 @@
             
             var butContainer = document.querySelector('.buttons-container');
             butContainer.classList.add('active');
+        }
+        
+        function search() {
+          var searchTerm = document.getElementById('search-input').value.toLowerCase();
+          var buttons = document.querySelectorAll('.new-ref');
+          
+          for (var i = 0; i < buttons.length; i++) {
+              var buttonText = buttons[i].innerText.toLowerCase();
+              console.log(buttonText);
+              if (!buttonText.includes(searchTerm)) {
+                buttons[i].classList.add('hidden');
+              } else {
+                buttons[i].classList.remove('hidden');
+              }
+            }
+          /*
+          var titles = document.getElementById('news').innerText.split('\n');
+          var matchingTitles = titles.filter(title => title.toLowerCase().includes(searchTerm));
+          displaySearchResults(matchingTitles);
+           */
+        }
+
+        function displaySearchResults(results) {
+          var resultsList = document.getElementById('search-results');
+          resultsList.innerHTML = '';
+
+          results.forEach(result => {
+            var listItem = document.createElement('li');
+            listItem.textContent = result;
+            resultsList.appendChild(listItem);
+          });
         }
     
     </script>

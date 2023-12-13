@@ -9,15 +9,17 @@
         body {
             padding-top: 60px;
             background-color: #fcf0a9;
+            margin-bottom: 20px;
         }
         
         header {
             background-color: #fcf0a9;
         }
 
-        nav a:hover {
+        nav a:hover, nav i:hover {
           font-weight: bold;
           color: red;
+          cursor: pointer;
         }
         
         .grid-item {
@@ -75,6 +77,17 @@
             color: #243b04;
         }
         
+        #scheduleTable {
+            margin-top: 10px;
+            display: none;
+            flex-direction: column;
+            max-width: 100%;
+        }
+        
+        #myTable {
+            max-width: 100%;
+        }
+        
         .edit-input {
             display: none;
             width: 80%;
@@ -92,7 +105,36 @@
             background-color: #c7fa7f;
         }
         
-        @media (max-width: 650px) {
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            border: 2px solid black;
+        }
+        
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid black;
+        }
+        
+        th.column-header {
+            background-color: #f2f2f2;
+        }
+
+        th.row-header {
+            background-color: #e6e6e6;
+        }
+        
+        td.selected {
+            background-color: #ccc;
+
+        }
+        
+        #connect-small, #hw-small {
+            display: none;
+        }
+        
+        @media screen and (max-width: 650px) {
             
             .photo {
                 height: auto;
@@ -109,14 +151,28 @@
             body {
                 display: block;
                 padding-top: 100px;
+                width: 100vw;
+                height: 100%;
             }
             
+            #connect-full, #hw-full {
+                display: none;
+            }
+            
+            #connect-small, #hw-small {
+                display: block;
+            }
             .main {
                 flex-direction: column;
+                width: 100%;
             }
             
             #photo {
                 max-width: 100%;
+            }
+            
+            #myTable {
+                font-size: 15px;
             }
         }
         
@@ -129,8 +185,10 @@
       <nav>
         <ul>
             <li><a href="index.html" style="font-size:25px"><i class="fa-solid fa-house"></i></a></li>
-            <li><a id="hw" href="#">Домашние задания</a></li>
-            <li><a id="connect" href="#">Связаться с преподавателем</a></li>
+            <li><a id="hw-full" href="#">Домашние задания</a></li>
+            <li><i id="hw-small" class="fa-solid fa-book"></i></li>
+            <li><a id="connect-full" href="#">Связаться с преподавателем</a></li>
+            <li><i id="connect-small"class="fa-solid fa-comments"></i></li>
             <li><a href="#" style="font-size:25px"><i class="fa-solid fa-user"></i></a></li>
         </ul>
       </nav>
@@ -156,25 +214,94 @@
                 <div id="saturday" class="grid-item"></div>
                 <div id="sunday" class="grid-item"></div>
                 
-                <p>16:00</p>
-                <p></p>
-                <p></p>
-                <p>16:00</p>
-                <p></p>
-                <p></p>
-                <p></p>
+                <p id="monday1" class="time">16:00</p>
+                <p id="tuesday1" class="time"></p>
+                <p id="wednesday1" class="time"></p>
+                <p id="thursday1" class="time">16:00</p>
+                <p id="friday1" class="time"></p>
+                <p id="saturday1" class="time"></p>
+                <p id="sunday1" class="time"></p>
             </div>
-            
+            <div id="scheduleTable">
+                <table id="myTable">
+                    <tr>
+                        <th class="row-header"></th>
+                        <th class="column-header">Пн</th>
+                        <th class="column-header" onclick="toggleColumn(this)">Вт</th>
+                        <th class="column-header" onclick="toggleColumn(this)">Ср</th>
+                        <th class="column-header" onclick="toggleColumn(this)">Чт</th>
+                        <th class="column-header" onclick="toggleColumn(this)">Пт</th>
+                        <th class="column-header" onclick="toggleColumn(this)">Сб</th>
+                        <th class="column-header" onclick="toggleColumn(this)">Вс</th>
+                    </tr>
+                    <tr>
+                        <th class="row-header">15:00</th>
+                        <td onclick="toggleCell(this)"> </td>
+                        <td onclick="toggleCell(this)"> </td>
+                        <td onclick="toggleCell(this)"> </td>
+                        <td onclick="toggleCell(this)"> </td>
+                        <td onclick="toggleCell(this)"> </td>
+                        <td onclick="toggleCell(this)"> </td>
+                        <td onclick="toggleCell(this)"> </td>
+                    </tr>
+                    <tr>
+                        <th class="row-header">16:00</th>
+                        <td onclick="toggleCell(this)"> </td>
+                        <td onclick="toggleCell(this)"> </td>
+                        <td onclick="toggleCell(this)"> </td>
+                        <td onclick="toggleCell(this)"> </td>
+                        <td onclick="toggleCell(this)"> </td>
+                        <td onclick="toggleCell(this)"> </td>
+                        <td onclick="toggleCell(this)"> </td>
+                    </tr>
+                    <tr>
+                        <th class="row-header">17:00</th>
+                        <td onclick="toggleCell(this)"> </td>
+                        <td onclick="toggleCell(this)"> </td>
+                        <td onclick="toggleCell(this)"> </td>
+                        <td onclick="toggleCell(this)"> </td>
+                        <td onclick="toggleCell(this)"> </td>
+                        <td onclick="toggleCell(this)"> </td>
+                        <td onclick="toggleCell(this)"> </td>
+                    </tr>
+                    <tr>
+                        <th class="row-header">18:00</th>
+                        <td onclick="toggleCell(this)"> </td>
+                        <td onclick="toggleCell(this)"> </td>
+                        <td onclick="toggleCell(this)"> </td>
+                        <td onclick="toggleCell(this)"> </td>
+                        <td onclick="toggleCell(this)"> </td>
+                        <td onclick="toggleCell(this)"> </td>
+                        <td onclick="toggleCell(this)"> </td>
+                    </tr>
+                    <tr>
+                        <th class="row-header">19:00</th>
+                        <td onclick="toggleCell(this)"> </td>
+                        <td onclick="toggleCell(this)"> </td>
+                        <td onclick="toggleCell(this)"> </td>
+                        <td onclick="toggleCell(this)"> </td>
+                        <td onclick="toggleCell(this)"> </td>
+                        <td onclick="toggleCell(this)"> </td>
+                        <td onclick="toggleCell(this)"> </td>
+                    </tr>
+                    <tr>
+                        <th class="row-header">20:00</th>
+                        <td onclick="toggleCell(this)"> </td>
+                        <td onclick="toggleCell(this)"> </td>
+                        <td onclick="toggleCell(this)"> </td>
+                        <td onclick="toggleCell(this)"> </td>
+                        <td onclick="toggleCell(this)"> </td>
+                        <td onclick="toggleCell(this)"> </td>
+                        <td onclick="toggleCell(this)"> </td>
+                    </tr>
+                </table>
+                <button id="scheduleOkButton" onclick="acceptSchedule()">OK</button>
+            </div>
         </div>
     </div>
 
 <script>
-    var screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-
-    if (screenWidth < 650) {
-        document.getElementById('hw').innerHTML = `<i class="fa-solid fa-book"></i>`;
-        document.getElementById('connect').innerHTML = `<i class="fa-solid fa-comments"></i>`;
-    }
+    var toggledCells = [];
     
     var urlParams = new URLSearchParams(window.location.search);
     var inputName = urlParams.get('name');
@@ -205,7 +332,7 @@
         
             <p>Расписание: </p>
             <p></p>
-            <button class="edit" onclick="window.location.href='form.html'">ред.</button>
+            <button class="edit" onclick="editSchedule()">ред.</button>
     
     
         `
@@ -238,7 +365,69 @@
         editText.innerHTML = `${editInput.value}`;
     }
     
+    function editSchedule() {
+        var schedule = document.getElementById("scheduleTable");
+        schedule.style.display = 'flex';
+    }
     
+    function acceptSchedule() {
+        var days = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
+        
+        var schedule = document.getElementById("scheduleTable");
+        schedule.style.display = 'none';
+        
+        var timeP = document.querySelectorAll(".time");
+        timeP.forEach(function(element) {
+          element.remove();
+        });
+        
+        toggledCells = document.querySelectorAll(".selected");
+        times = {};
+        days.forEach(day => {
+            times[day] = [];
+        });
+        timesCnt = 1;
+        
+        daysItems = document.querySelectorAll(".grid-item");
+        daysItems.forEach(function(dayItem) {
+            dayItem.style.backgroundColor = 'white';
+        });
+        
+        var table = document.getElementById("myTable");
+        
+        for (var i = 0; i < table.rows.length; i++) {
+            var row = table.rows[i];
+            for (var j = 0; j < row.cells.length; j++) {
+                var cell = row.cells[j];
+                if (Array.from(toggledCells).includes(cell)) {
+                    dayIndex = (j - 1) % 7;
+                    day = days[dayIndex];
+                    
+                    document.getElementById(day).style.backgroundColor = '#c7fa7f';
+                    times[day].push(row.cells[0].textContent);
+                    if (times[day].length > 1)
+                        timesCnt++;
+                }
+            }
+       }
+        console.log(times);
+        for (var i = 1; i <= timesCnt; i++) {
+            for (var j = 0; j < 7; j++) {
+                var timeIndex = days[j];
+                var time = times[timeIndex][i - 1];
+                console.log(timeIndex, i, time);
+                if (time) {
+                    document.getElementById("schedule").innerHTML += `<p id=${days[j]}${i} class="time">${times[timeIndex][i - 1]}</p>`;
+                } else {
+                    document.getElementById("schedule").innerHTML += `<p id=${days[j]}${i} class="time"> </p>`;
+                }
+            }
+        }
+    }
+    
+    function toggleCell(cell) {
+        cell.classList.toggle("selected");
+    }
 
 </script>
 
